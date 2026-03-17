@@ -6,13 +6,9 @@
 using namespace std;
 
 vector<long long> getFibonacciInRange(long long start, long long end) {
-    if (start > end) {
-        throw invalid_argument("Начало диапазона должно быть меньше или равно концу");
-    }
-    
     vector<long long> fibNumbers;
     long long prev = 0, curr = 1;
-    
+
     while (prev <= end) {
         if (prev >= start) {
             fibNumbers.push_back(prev);
@@ -21,33 +17,21 @@ vector<long long> getFibonacciInRange(long long start, long long end) {
         prev = curr;
         curr = next;
     }
-    
+
     return fibNumbers;
 }
 
-
-pair<long long, long long> getUserInput() {
-    long long start, end;
-    cout << "Введите начало диапазона: ";
-    cin >> start;
-    cout << "Введите конец диапазона: ";
-    cin >> end;
-    return {start, end};
-}
-
-
 void validateRange(long long start, long long end) {
     if (start >= end) {
-        throw invalid_argument("Ошибка: начало диапазона должно быть меньше конца.");
+        throw invalid_argument("Ошибка: первое число должно быть меньше второго");
     }
 }
-
 
 string formatOutput(const vector<long long>& fibNumbers) {
     if (fibNumbers.empty()) {
-        return "В заданном диапазоне нет чисел Фибоначчи.";
+        return "В заданном диапазоне нету чисел Фибоначчи";
     }
-    
+
     stringstream ss;
     for (size_t i = 0; i < fibNumbers.size(); ++i) {
         if (i > 0) {
@@ -58,19 +42,21 @@ string formatOutput(const vector<long long>& fibNumbers) {
     return ss.str();
 }
 
-
 int main() {
     try {
-        auto [start, end] = getUserInput();
+        long long start, end;
+        cin >> start >> end;
+
         validateRange(start, end);
+
         vector<long long> fibonacciNumbers = getFibonacciInRange(start, end);
         cout << formatOutput(fibonacciNumbers) << endl;
-            
+
     } catch (const invalid_argument& e) {
         cout << e.what() << endl;
     } catch (const exception& e) {
-        cout << "Произошла непредвиденная ошибка: " << e.what() << endl;
+        cout << "Упс, произошла ошибка: " << e.what() << endl;
     }
-    
+
     return 0;
 }
